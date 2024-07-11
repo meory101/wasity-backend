@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
  * Eng Nour Othman
  */
 
-// role 1 is super_admin   2 is wasity_manager  3 is sub_branch_owner
+// role 1 is super_admin   2 is wasity_manager   3 is sub_branch_owner
 class ManagerController extends Controller
 {
     public function addWasityManager(Request $request)
@@ -52,7 +52,7 @@ class ManagerController extends Controller
         return response()->json([], 500);
     }
 
-    public function subBranchOwnerLogin(Request $request)
+    public function managerLogin(Request $request)
     {
 
         // request 

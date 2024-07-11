@@ -61,7 +61,7 @@ Route::post('clientDeliveryLogin', [ClientDeliveryController::class, 'clientDeli
 
 
 // wasity_manager/ sub_branch_owner auth
-Route::post('subBranchOwnerLogin', [ManagerController::class, 'subBranchOwnerLogin']);
+Route::post('managerLogin', [ManagerController::class, 'managerLogin']);
 Route::post('addSubBranchOwner', [ManagerController::class, 'addSubBranchOwner']);
 Route::post('addWasityManager', [ManagerController::class, 'addWasityManager']);
 
@@ -79,7 +79,6 @@ Route::get('getSubCategoriesByMainCategoryId/{id}', [SubCategoryController::clas
 
 // client 
 Route::get('clientHome', [ClientDeliveryController::class, 'clientHome']);
-Route::get('getProductsBySubCategoryId/{id}', [ProductController::class, 'getProductsBySubCategoryId']);
 
 
 //branches 
@@ -97,6 +96,17 @@ Route::post('updateSubBranch', [SubBranchCotroller::class, 'updateSubBranch']);
 //brand
 Route::post('addBrand', [BrandController::class, 'addBrand']);
 
+
+
 //product
+Route::get('getProductsBySubCategoryId/{id}', [ProductController::class, 'getProductsBySubCategoryId']);
 Route::post('addProduct', [ProductController::class, 'addProduct']);
+Route::get('getProductsBySubBranchId/{id}', [ProductController::class, 'getProductsBySubBranchId']);
+Route::post('updateProduct', [ProductController::class, 'updateProduct']);
+Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
+
+
+
+
+
 
