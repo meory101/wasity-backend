@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ManagerModel;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+/**
+ * Eng Nour Othman
+ */
+
+// role 1 is super_admin   2 is wasity_manager  3 is sub_branch_owner
+class ManagerController extends Controller
+{
+    public function addWasityManager(Request $request)
+    {
+
+
+
+        if (ManagerModel::where('email', $request->email)->first()) {
+            return response()->json(['message' => "email already in use"], 401);
+        }
+        $manager = new  ManagerModel;
+        $manager->email = $request->email;
+        $manager->password = Hash::make($request->password);
+        $manager->role_id = 2;
+        $manager = $manager->save();
+        if ($manager) {
+            return response()->json([], 200);
+        }
+
+        return response()->json([], 500);
+    }
+
+    public function addSubBranchOwner(Request $request)
+    {
+
+        if (ManagerModel::where('email', $request->email)->first()) {
+            return response()->json(['message' => "email already in use"], 401);
+        }
+        $manager = new  ManagerModel;
+        $manager->email = $request->email;
+        $manager->password = Hash::make($request->password);
+        $manager->role_id = 3;
+        $manager = $manager->save();
+        if ($manager) {
+            return response()->json([], 200);
+        }
+
+        return response()->json([], 500);
+    }
+
+    public function subBranchOwnerLogin(Request $request)
+    {
+
+        // request 
+        // email
+        // password
+        $manager = ManagerModel::where('email', $request->email)->first();
+        if ($manager) {
+
+
+            if (Hash::check($request->password, $manager->password)) {
+                return response()->json(
+                    [
+                        'token' => $manager->createToken('token')->plainTextToken,
+                        'manager_data'
+                        => $manager
+                    ],
+                    200
+                );
+            }
+        } else {
+            return response()->json(
+                ['message' => 'email is not found'],
+                401
+            );
+        }
+
+        return response()->json(
+            ['message' => 'password is wrong'],
+            401
+        );
+    }
+}
