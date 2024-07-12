@@ -7,6 +7,7 @@ use App\Models\DeliveryManModel;
 use App\Models\MainCategoryModel;
 use App\Models\OTPModel;
 use App\Models\ProductModel;
+use App\Models\SubCategoryModel;
 use Illuminate\Http\Request;
 
 /**
@@ -65,18 +66,25 @@ class ClientDeliveryController extends Controller
         //     "newItems" =>[],
         //     "popularItems" =>[]
         // ]
-
+        $message = [];
 
         $mainCategories = MainCategoryModel::all();
         $products = new ProductModel;
-        $newItems = $products->orderBy('created_at', 'desc')->get();
+        for ($i = 0; $i < count($mainCategories); $i++) {
+            $subCategories = SubCategoryModel::where('main_category_id', $mainCategories[$i]->id)->get();
+            $newItems = $products->whereIn('sub_category_id', $subCategories->pluck('id'))->orderBy('created_at', 'desc')->get();
+            if (count($newItems) > 0) {
+                array_push($message, [
+                    'mainCategory' => $mainCategories[$i],
+                    'newItems' => $newItems,
+
+                ]);
+            }
+        }
+
 
         if ($mainCategories && $newItems) {
-            return response()->json([
-                "mainCategories" => $mainCategories,
-                "newItems" => $newItems,
-
-            ], 200);
+            return response()->json($message, 200);
         }
         return response()->json([], 500);
     }

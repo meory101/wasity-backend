@@ -39,6 +39,7 @@ class ProductController extends Controller
         $image = $request->file('image')->store('public');
         $product->image = basename($image);
         $product->name = $request->name;
+        $product->price = $request->price;
         $product->brand_id = $request->brand_id;
         $product->sub_category_id = $request->sub_category_id;
         $product->sub_branch_id = $request->sub_branch_id;
@@ -58,6 +59,9 @@ class ProductController extends Controller
         if ($product) {
             if ($request->name) {
                 $product->name = $request->name;
+            }
+            if ($request->price) {
+                $product->price = $request->price;
             }
             if ($request->image) {
                 Storage::delete('public/' . $product->image);
