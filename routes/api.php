@@ -37,17 +37,6 @@ use Illuminate\Support\Facades\Route;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 //0000 todo   validation role mangment //0000
 
 
@@ -69,12 +58,17 @@ Route::post('addWasityManager', [ManagerController::class, 'addWasityManager']);
 
 //main category
 Route::post('addMainCategory', [MainCategoryController::class, 'addMainCategory']);
-
+Route::get('getMainCatgories', [MainCategoryController::class, 'getMainCatgories']);
+Route::post('updateMainCatgory', [MainCategoryController::class, 'updateMainCatgory']);
+Route::post('deleteMainCatgory', [MainCategoryController::class, 'deleteMainCatgory']);
 
 
 //sub category
 Route::post('addSubCategory', [SubCategoryController::class, 'addSubCategory']);
 Route::get('getSubCategoriesByMainCategoryId/{id}', [SubCategoryController::class, 'getSubCategoriesByMainCategoryId']);
+Route::post('updateSubCategory', [SubCategoryController::class, 'updateSubCategory']);
+Route::post('deleteSubCategory', [SubCategoryController::class, 'deleteSubCategory']);
+
 
 
 // client 
@@ -84,7 +78,10 @@ Route::get('clientHome', [ClientDeliveryController::class, 'clientHome']);
 //branches 
 
 //main branch
+Route::get('getMainBranches', [MainBranchController::class, 'getMainBranches']);
 Route::post('addMainBranch', [MainBranchController::class, 'addMainBranch']);
+Route::post('updateMainBranch', [MainBranchController::class, 'updateMainBranch']);
+
 
 
 
@@ -95,6 +92,10 @@ Route::post('updateSubBranch', [SubBranchCotroller::class, 'updateSubBranch']);
 
 //brand
 Route::post('addBrand', [BrandController::class, 'addBrand']);
+Route::get('getBrands', [BrandController::class, 'getBrands']);
+Route::post('updateBrand', [BrandController::class, 'updateBrand']);
+Route::post('deleteBrand', [BrandController::class, 'deleteBrand']);
+
 
 
 
@@ -104,9 +105,3 @@ Route::post('addProduct', [ProductController::class, 'addProduct']);
 Route::get('getProductsBySubBranchId/{id}', [ProductController::class, 'getProductsBySubBranchId']);
 Route::post('updateProduct', [ProductController::class, 'updateProduct']);
 Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
-
-
-
-
-
-
