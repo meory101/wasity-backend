@@ -11,12 +11,26 @@ class ProductController extends Controller
     public function getProductsBySubCategoryId($id)
     {
         $products = ProductModel::where('sub_category_id', $id)->get();
-
+        $message = [];
+        for ($i = 0; $i < count($products); $i++) {
+            array_push($message, [
+                'product' => $products[$i],
+                'brand' =>  $products[$i]->brand,
+                'subCategory' =>  $products[$i]->subCategory
+                // 'subBranch' =>  $products[$i]->subSubBrancg,
+            ]);
+        }
         if ($products) {
-            return response()->json($products, 200);
+            return response()->json($message, 200);
         }
         return response()->json([], 500);
     }
+
+
+
+
+
+
     public function getProductsBySubBranchId($id)
     {
         $products = ProductModel::where('sub_branch_id', $id)->get();

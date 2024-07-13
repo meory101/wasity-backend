@@ -15,4 +15,9 @@ class SubCategoryModel extends Model
     {
         return $this->belongsTo(MainBranchModel::class, 'main_branch_id', 'id');
     }
+
+    public function product()
+    {
+        return $this->hasMany(ProductModel::class, 'id', 'sub_category_id');
+    }
 }
