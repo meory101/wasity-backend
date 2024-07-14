@@ -55,11 +55,12 @@ class ClientDeliveryController extends Controller
 
 
 
-    public function clientHome()
+    public function clientHome(Request $request)
     {
         //main categories
         //new arrival items
         //most popular items
+        //isImmediately true false
 
         // [
         //     "mainCategories" =>[],
@@ -72,7 +73,9 @@ class ClientDeliveryController extends Controller
         $products = new ProductModel;
         for ($i = 0; $i < count($mainCategories); $i++) {
             $subCategories = SubCategoryModel::where('main_category_id', $mainCategories[$i]->id)->get();
+
             $newItems = $products->whereIn('sub_category_id', $subCategories->pluck('id'))->orderBy('created_at', 'desc')->get();
+
             if (count($newItems) > 0) {
                 array_push($message, [
                     'mainCategory' => $mainCategories[$i],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\addressController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientDeliveryController;
@@ -105,3 +106,12 @@ Route::post('addProduct', [ProductController::class, 'addProduct']);
 Route::get('getProductsBySubBranchId/{id}', [ProductController::class, 'getProductsBySubBranchId']);
 Route::post('updateProduct', [ProductController::class, 'updateProduct']);
 Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
+
+
+
+//address 
+Route::post('addAddress', [AddressController::class, 'addAddress']);
+Route::post('updateAddress', [AddressController::class, 'updateAddress']);
+Route::get('getAddressesByClientId/{id}', [AddressController::class, 'getAddressesByClientId']);
+
+
