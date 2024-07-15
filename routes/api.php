@@ -7,7 +7,6 @@ use App\Http\Controllers\ClientDeliveryController;
 use App\Http\Controllers\MainBranchController;
 use App\Http\Controllers\MainCategoryController;
 use App\Http\Controllers\ManagerController;
-use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubBranchCotroller;
@@ -114,9 +113,5 @@ Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
 Route::post('addAddress', [AddressController::class, 'addAddress']);
 Route::post('updateAddress', [AddressController::class, 'updateAddress']);
 Route::get('getAddressesByClientId/{id}', [AddressController::class, 'getAddressesByClientId']);
-
-
-//order
-Route::post('addOrder', [OrderController::class, 'addOrder']);
 
 
