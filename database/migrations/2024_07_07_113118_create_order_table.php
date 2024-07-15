@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order_number');
             $table->integer('status_code');
-
+            $table->integer('delivery_type');
             $table->double('sub_total')->nullable();
             $table->double('total')->nullable();
             $table->double('delivery_fee')->nullable();

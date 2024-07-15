@@ -16,6 +16,8 @@ class OrderController extends Controller
 
 
     // pending 0 accepted by branch 1 on the way 2 deliverd 3
+
+    //delivery type 0 1
     public function addOrder(Request $request)
     {
         $order = new OrderModel;
