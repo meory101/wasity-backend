@@ -19,10 +19,7 @@ class OrderModel extends Model
     }
     public function product()
     {
-        return $this->belongsTo(ProductModel::class, 'product_id', 'id');
+        return $this->hasMany(ProductModel::class);
     }
-    public function paymentSummary()
-    {
-        return $this->hasOne(PaymentSummaryModel::class, 'id', 'order_id');
-    }
+
 }
