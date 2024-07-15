@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('otp_code');
             $table->string('expired')->nullable();
-            $table->foreignId('client_id')->constrained('client')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('delivery_man_id')->constrained('delivery_man')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('client_id')->nullable()->constrained('client')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('delivery_man_id')->nullable()->constrained('delivery_man')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
