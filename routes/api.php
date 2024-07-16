@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientDeliveryController;
 use App\Http\Controllers\MainBranchController;
 use App\Http\Controllers\MainCategoryController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubBranchCotroller;
@@ -52,8 +53,7 @@ Route::post('clientDeliveryLogin', [ClientDeliveryController::class, 'clientDeli
 
 // wasity_manager/ sub_branch_owner auth
 Route::post('managerLogin', [ManagerController::class, 'managerLogin']);
-Route::post('addSubBranchOwner', [ManagerController::class, 'addSubBranchOwner']);
-Route::post('addWasityManager', [ManagerController::class, 'addWasityManager']);
+Route::post('addManager', [ManagerController::class, 'addManager']);
 
 
 
@@ -89,6 +89,7 @@ Route::post('updateMainBranch', [MainBranchController::class, 'updateMainBranch'
 //sub branch
 Route::post('addSubBranch', [SubBranchCotroller::class, 'addSubBranch']);
 Route::post('updateSubBranch', [SubBranchCotroller::class, 'updateSubBranch']);
+Route::get('getSubBranchesByMainBranchId/{id}', [SubBranchCotroller::class, 'getSubBranchesByMainBranchId']);
 
 
 //brand
@@ -96,8 +97,6 @@ Route::post('addBrand', [BrandController::class, 'addBrand']);
 Route::get('getBrands', [BrandController::class, 'getBrands']);
 Route::post('updateBrand', [BrandController::class, 'updateBrand']);
 Route::post('deleteBrand', [BrandController::class, 'deleteBrand']);
-
-
 
 
 //product
@@ -115,3 +114,8 @@ Route::post('updateAddress', [AddressController::class, 'updateAddress']);
 Route::get('getAddressesByClientId/{id}', [AddressController::class, 'getAddressesByClientId']);
 
 
+//order
+Route::post('addOrder', [OrderController::class, 'addOrder']);
+Route::post('updateOrderStatus', [OrderController::class, 'updateOrderStatus']);
+Route::get('getClientOrders/{id}', [OrderController::class, 'getClientOrders']);
+Route::get('getDeliveredOrders/{id}', [OrderController::class, 'getDeliveredOrders']);

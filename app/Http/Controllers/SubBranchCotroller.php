@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Storage;
 
 class SubBranchCotroller extends Controller
 {
+
+
+    public function getSubBranchesByMainBranchId($id)
+    {
+        $subBranchs = SubBranchModel::where('main_branch_id', $id)->get();
+        if ($subBranchs) {
+            return response()->json($subBranchs, 200);
+        }
+        return response()->json([], 500);
+    }
+
+
+    
     public function addSubBranch(Request $request)
     {
 
@@ -24,6 +37,7 @@ class SubBranchCotroller extends Controller
         $subBranch->name = $request->name;
         $subBranch->lat = $request->lat;
         $subBranch->long = $request->long;
+        $subBranch->active_status = $request->active_status;
         $subBranch->main_branch_id = $request->main_branch_id;
         $subBranch->manager_id = $request->manager_id;
         $subBranch = $subBranch->save();
@@ -60,6 +74,9 @@ class SubBranchCotroller extends Controller
             }
             if ($request->long) {
                 $subBranch->long = $request->long;
+            }
+            if ($request->active_status) {
+                $subBranch->active_status = $request->active_status;
             }
 
             $subBranch =  $subBranch->save();

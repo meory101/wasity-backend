@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image');
             $table->double('lat');
             $table->double('long');
+            $table->integer('active_status');
             $table->foreignId('main_branch_id')->constrained('main_branch')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('manager_id')->constrained('manager')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

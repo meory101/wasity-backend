@@ -14,27 +14,7 @@ use Illuminate\Support\Facades\Hash;
 // role 1 is super_admin   2 is wasity_manager   3 is sub_branch_owner
 class ManagerController extends Controller
 {
-    public function addWasityManager(Request $request)
-    {
-
-
-
-        if (ManagerModel::where('email', $request->email)->first()) {
-            return response()->json(['message' => "email already in use"], 401);
-        }
-        $manager = new  ManagerModel;
-        $manager->email = $request->email;
-        $manager->password = Hash::make($request->password);
-        $manager->role_id = 2;
-        $manager = $manager->save();
-        if ($manager) {
-            return response()->json([], 200);
-        }
-
-        return response()->json([], 500);
-    }
-
-    public function addSubBranchOwner(Request $request)
+    public function addManager(Request $request)
     {
 
         if (ManagerModel::where('email', $request->email)->first()) {
@@ -43,7 +23,7 @@ class ManagerController extends Controller
         $manager = new  ManagerModel;
         $manager->email = $request->email;
         $manager->password = Hash::make($request->password);
-        $manager->role_id = 3;
+        $manager->role_id = $request->role_id;
         $manager = $manager->save();
         if ($manager) {
             return response()->json([], 200);
@@ -51,6 +31,8 @@ class ManagerController extends Controller
 
         return response()->json([], 500);
     }
+
+ 
 
     public function managerLogin(Request $request)
     {

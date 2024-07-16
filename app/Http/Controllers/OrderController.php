@@ -11,20 +11,25 @@ use Illuminate\Support\HigherOrderCollectionProxy;
 /**
  * Eng Nour Othman
  */
+
 class OrderController extends Controller
 {
 
+    // pending 0 accepted by branch 1 on the way 2 deliverd 3  rejected 4
+    //delivery type  0 immdediatly 1 not 
 
-    // pending 0 accepted by branch 1 on the way 2 deliverd 3
-    //delivery type
+
+
     public function addOrder(Request $request)
     {
         $order = new OrderModel;
         $subTotal = 0;
         $order->order_number = str()->random(8);
         $order->status_code = 0;
+        $order->delivery_type = $request->delivery_type;
         $order->client_id = $request->client_id;
         $order->delivery_man_id = $request->delivery_id;
+
         $order->address_id = $request->address_id;
         $order->save();
         for ($i = 0; $i < count($request->items); $i++) {
@@ -41,6 +46,40 @@ class OrderController extends Controller
             return response()->json([], 200);
         }
 
+        return response()->json([], 500);
+    }
+
+    public function  updateOrderStatus(Request $request)
+    {
+        $order = OrderModel::find($request->id);
+        if (!$order) {
+            return response()->json(['message' => 'order not found'], 401);
+        }
+        $order->status_code = $request->status_code;
+        $order = $order->save();
+        if ($order) {
+            return response()->json([], 200);
+        }
+        return response()->json([], 500);
+    }
+
+    public function getClientOrders($id)
+    {
+        $orders = OrderModel::where('client_id', $id)->get();
+        if ($orders) {
+            return response()->json($orders, 200);
+        }
+        return response()->json([], 500);
+    }
+
+
+
+    public function getDeliveredOrders($id)
+    {
+        $orders = OrderModel::where('delivery_man_id', $id)->where('status_code', 3)->get();
+        if ($orders) {
+            return response()->json($orders, 200);
+        }
         return response()->json([], 500);
     }
 }
