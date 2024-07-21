@@ -19,7 +19,21 @@ class OrderController extends Controller
     //delivery type  0 immdediatly 1 not 
 
 
+    public function assignOrderToDelivery(Request $request)
+    {
 
+        $order = OrderModel::find($request->id);
+        if (!$order) {
+            return response()->json(['message' => 'order not found'], 401);
+        }
+        $order->delivery_man_id = $request->delivery_man_id;
+        $order->status_code = $request->status_code;
+        $order = $order->save();
+        if ($order) {
+            return response()->json([], 200);
+        }
+        return response()->json([], 500);
+    }
     public function addOrder(Request $request)
     {
         $order = new OrderModel;
