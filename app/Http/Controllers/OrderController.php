@@ -62,7 +62,23 @@ class OrderController extends Controller
         }
         return response()->json([], 500);
     }
+    public function cancelOrder(Request $request)
+    {
 
+        $order = OrderModel::find($request->id);
+        if (!$order) {
+            return response()->json(['message' => 'can not find order'], 200);
+        }
+        if ($order->status_code == 0 || $order->status_code == 1) {
+            $order =  $order->status_code = 4;
+            if ($order) {
+                return response()->json([], 200);
+            }
+        } else {
+            return response()->json(['message' => "you can not cancel order"], 400);
+        }
+        return response()->json([], 500);
+    }
     public function getClientOrders($id)
     {
         $orders = OrderModel::where('client_id', $id)->get();

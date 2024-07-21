@@ -119,3 +119,7 @@ Route::post('addOrder', [OrderController::class, 'addOrder']);
 Route::post('updateOrderStatus', [OrderController::class, 'updateOrderStatus']);
 Route::get('getClientOrders/{id}', [OrderController::class, 'getClientOrders']);
 Route::get('getDeliveredOrders/{id}', [OrderController::class, 'getDeliveredOrders']);
+Route::post('cancelOrder', [OrderController::class, 'cancelOrder']);
+
+
+
