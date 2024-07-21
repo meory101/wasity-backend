@@ -10,6 +10,7 @@ use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RateController;
 use App\Http\Controllers\SubBranchCotroller;
 use App\Http\Controllers\SubCategoryController;
 use App\Models\ProductModel;
@@ -129,3 +130,5 @@ Route::post('updateClientProfile', [ClientDeliveryController::class, 'updateClie
 Route::get('getClientProfile/{id}', [ClientDeliveryController::class, 'getClientProfile']);
 
 
+//rate 
+Route::post('rateProduct', [RateController::class, 'rateProduct']);
