@@ -98,4 +98,13 @@ class OrderController extends Controller
         }
         return response()->json([], 500);
     }
+
+    public function getAcceptedOrders()
+    {
+        $orders = OrderModel::where('status_code', 1)->get();
+        if ($orders) {
+            return response()->json($orders, 200);
+        }
+        return response()->json([], 500);
+    }
 }

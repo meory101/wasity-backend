@@ -53,7 +53,43 @@ class ClientDeliveryController extends Controller
         return response()->json([], 500);
     }
 
+    public function updateClientProfile(Request $request)
+    {
+        $client = ClientModel::find($request->id);
+        if ($client) {
+            if ($request->name) {
+                $client->name  = $request->name;
+            }
+            if ($request->email) {
+                $client->email  = $request->email;
+            }
+            if ($request->gender) {
+                $client->gender  = $request->gender;
+            }
+            if ($request->birth_date) {
+                $client->birth_date  = $request->birth_date;
+            }
+            $res = $client->save();
+            if ($res) {
+                return response()->json($client, 200);
+            }
+        } else {
+            return response()->json([], 400);
+        }
+         
+            return response()->json([], 500);
+        
+    }
 
+    public function getClientProfile($id){
+        $client = ClientModel::find($id);
+        if ($client) {
+            return response()->json($client, 200);
+        }
+        return response()->json([], 500);
+
+
+    }
 
     public function clientHome(Request $request)
     {
