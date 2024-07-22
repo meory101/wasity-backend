@@ -50,7 +50,7 @@ class AddressController extends Controller
                 return response()->json([], 200);
             }
         } else {
-            return response()->json(['message' => 'address not found'], 401);
+            return response()->json(['message' => 'address not found'], 400);
         }
 
         return response()->json([], 500);

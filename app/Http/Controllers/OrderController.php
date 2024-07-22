@@ -24,7 +24,7 @@ class OrderController extends Controller
 
         $order = OrderModel::find($request->id);
         if (!$order) {
-            return response()->json(['message' => 'order not found'], 401);
+            return response()->json(['message' => 'order not found'], 400);
         }
         $order->delivery_man_id = $request->delivery_man_id;
         $order->status_code = $request->status_code;
@@ -67,7 +67,7 @@ class OrderController extends Controller
     {
         $order = OrderModel::find($request->id);
         if (!$order) {
-            return response()->json(['message' => 'order not found'], 401);
+            return response()->json(['message' => 'order not found'], 400);
         }
         $order->status_code = $request->status_code;
         $order = $order->save();

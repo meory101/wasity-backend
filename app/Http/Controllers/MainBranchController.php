@@ -26,10 +26,10 @@ class MainBranchController extends Controller
         $mainBranch = new MainBranchModel;
         $mainBranch->name = $request->name;
         if (MainBranchModel::where('name', $request->name)->first()) {
-            return response()->json(['message' => 'name is taken'], 401);
+            return response()->json(['message' => 'name is taken'], 400);
         }
         if (!$request->hasFile('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
 
         $image = $request->file('image')->store('public');
@@ -52,7 +52,7 @@ class MainBranchController extends Controller
             if ($request->name) {
 
                 if (MainBranchModel::where('name', $request->name)->first()) {
-                    return response()->json(['message' => 'name is taken'], 401);
+                    return response()->json(['message' => 'name is taken'], 400);
                 }
                 $mainBranch->name = $request->name;
             }
@@ -68,7 +68,7 @@ class MainBranchController extends Controller
                 return response()->json([], 200);
             }
         } else {
-            return response()->json([], 401);
+            return response()->json([], 400);
         }
 
         return response()->json([], 500);

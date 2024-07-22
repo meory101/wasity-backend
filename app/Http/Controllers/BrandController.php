@@ -15,11 +15,11 @@ class BrandController extends Controller
     public function addBrand(Request $request)
     {
         if (BrandModel::where('name', $request->name)->first()) {
-            return response()->json(['message' => 'name is taken'], 401);
+            return response()->json(['message' => 'name is taken'], 400);
         }
 
         if (!$request->file('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
 
 
@@ -53,7 +53,7 @@ class BrandController extends Controller
 
         if ($request->name) {
             if (BrandModel::where('name', $request->name)->first()) {
-                return response()->json(['message' => 'name is taken'], 401);
+                return response()->json(['message' => 'name is taken'], 400);
             }
             $brand->name = $request->name;
         }

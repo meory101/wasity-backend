@@ -46,7 +46,7 @@ class ClientDeliveryController extends Controller
                     return response()->json(['token' => $delivery_man->createToken('token')->plainTextToken], 200);
                 }
             } else {
-                return response()->json(['message' => 'otp is wrong'], 401);
+                return response()->json(['message' => 'otp is wrong'], 400);
             }
         }
 
@@ -76,19 +76,17 @@ class ClientDeliveryController extends Controller
         } else {
             return response()->json([], 400);
         }
-         
-            return response()->json([], 500);
-        
+
+        return response()->json([], 500);
     }
 
-    public function getClientProfile($id){
+    public function getClientProfile($id)
+    {
         $client = ClientModel::find($id);
         if ($client) {
             return response()->json($client, 200);
         }
         return response()->json([], 500);
-
-
     }
 
     public function clientHome(Request $request)

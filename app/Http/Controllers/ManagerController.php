@@ -18,7 +18,7 @@ class ManagerController extends Controller
     {
 
         if (ManagerModel::where('email', $request->email)->first()) {
-            return response()->json(['message' => "email already in use"], 401);
+            return response()->json(['message' => "email already in use"], 400);
         }
         $manager = new  ManagerModel;
         $manager->email = $request->email;
@@ -32,7 +32,7 @@ class ManagerController extends Controller
         return response()->json([], 500);
     }
 
- 
+
 
     public function managerLogin(Request $request)
     {
@@ -57,13 +57,13 @@ class ManagerController extends Controller
         } else {
             return response()->json(
                 ['message' => 'email is not found'],
-                401
+                400
             );
         }
 
         return response()->json(
             ['message' => 'password is wrong'],
-            401
+            400
         );
     }
 }

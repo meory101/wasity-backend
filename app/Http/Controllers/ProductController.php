@@ -46,7 +46,7 @@ class ProductController extends Controller
     {
 
         if (!$request->hasFile('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
         $product = new ProductModel;
 
@@ -89,7 +89,7 @@ class ProductController extends Controller
                 return response()->json([], 200);
             }
         } else {
-            return response()->json([], 401);
+            return response()->json([], 400);
         }
 
         return response()->json([], 500);
@@ -106,7 +106,7 @@ class ProductController extends Controller
                 return response()->json([], 200);
             }
         } else {
-            return response()->json(['message' => 'product not found'], 401);
+            return response()->json(['message' => 'product not found'], 400);
         }
 
         return response()->json([], 500);

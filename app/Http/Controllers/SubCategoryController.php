@@ -14,10 +14,10 @@ class SubCategoryController extends Controller
         $subCategory = new SubCategoryModel;
         $subCategory->name = $request->name;
         if (SubCategoryModel::where('name', $request->name)->first()) {
-            return response()->json(['message' => 'name is taken'], 401);
+            return response()->json(['message' => 'name is taken'], 400);
         }
         if (!$request->hasFile('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
         $image = $request->file('image')->store('public');
         $subCategory->image = basename($image);
@@ -50,7 +50,7 @@ class SubCategoryController extends Controller
 
         if ($request->name) {
             if (SubCategoryModel::where('name', $request->name)->first()) {
-                return response()->json(['message' => 'name is taken'], 401);
+                return response()->json(['message' => 'name is taken'], 400);
             }
             $subCategory->name = $request->name;
         }

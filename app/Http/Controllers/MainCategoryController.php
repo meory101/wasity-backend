@@ -25,10 +25,10 @@ class MainCategoryController extends Controller
         $mainCategory = new MainCategoryModel;
 
         if (MainCategoryModel::where('name', $request->name)->first()) {
-            return response()->json(['message' => 'name is taken'], 401);
+            return response()->json(['message' => 'name is taken'], 400);
         }
         if (!$request->file('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
         $mainCategory->name = $request->name;
         $image = $request->file('image')->store('public');
@@ -49,7 +49,7 @@ class MainCategoryController extends Controller
 
         if ($request->name) {
             if (MainCategoryModel::where('name', $request->name)->first()) {
-                return response()->json(['message' => 'name is taken'], 401);
+                return response()->json(['message' => 'name is taken'], 400);
             }
             $mainCategory->name = $request->name;
         }

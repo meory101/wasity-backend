@@ -20,16 +20,16 @@ class SubBranchCotroller extends Controller
     }
 
 
-    
+
     public function addSubBranch(Request $request)
     {
 
         $subBranch = new SubBranchModel;
         if (SubBranchModel::where('name', $request->name)->first()) {
-            return response()->json(['message' => 'name is taken'], 401);
+            return response()->json(['message' => 'name is taken'], 400);
         }
         if (!$request->hasFile('image')) {
-            return response()->json(['message' => 'image is required'], 401);
+            return response()->json(['message' => 'image is required'], 400);
         }
 
         $image = $request->file('image')->store('public');
@@ -58,7 +58,7 @@ class SubBranchCotroller extends Controller
             if ($request->name) {
 
                 if (SubBranchModel::where('name', $request->name)->first()) {
-                    return response()->json(['message' => 'name is taken'], 401);
+                    return response()->json(['message' => 'name is taken'], 400);
                 }
                 $subBranch->name = $request->name;
             }
@@ -84,7 +84,7 @@ class SubBranchCotroller extends Controller
                 return response()->json([], 200);
             }
         } else {
-            return response()->json([], 401);
+            return response()->json([], 400);
         }
 
         return response()->json([], 500);
