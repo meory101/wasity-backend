@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('gender')->nullable();
             $table->string('birth_date')->nullable();
             $table->string('number');
+            $table->string('image')->nullable();
+
             $table->timestamps();
         });
     }

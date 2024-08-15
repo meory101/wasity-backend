@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeed::class,
-            ManagerSeed::class
+            ManagerSeed::class,
+            VehicleSeed::class,
 
         ]);
     }

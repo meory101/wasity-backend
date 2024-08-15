@@ -32,7 +32,7 @@ class OTPController extends Controller
         }
         if ($request->type == 1) {
             $delivery_man =  new DeliveryManModel;
-            $delivery_man->where('number', $request->number)->first();
+          $delivery_man=  $delivery_man->where('number', $request->number)->first();
             if (!$delivery_man) {
                 $delivery_man =  new DeliveryManModel;
                 $delivery_man->number = $request->number;
@@ -40,6 +40,8 @@ class OTPController extends Controller
             }
             $otp->delivery_man_id
                 = $delivery_man->id;
+
+
         }
         if ($otp->client_id || $otp->delivery_man_id) {
             $otp->otp_code = $otp_code;

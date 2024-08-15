@@ -17,7 +17,11 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('gender')->nullable();
             $table->string('birth_date')->nullable();
+            $table->string('image')->nullable();
             $table->string('number');
+            $table->double('lat')->nullable();
+            $table->double('long')->nullable();
+            $table->foreignId('vehicle_id')->nullable()->constrained('vehicle')->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

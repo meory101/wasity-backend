@@ -7,8 +7,10 @@ use App\Models\DeliveryManModel;
 use App\Models\MainCategoryModel;
 use App\Models\OTPModel;
 use App\Models\ProductModel;
+use App\Models\RateModel;
 use App\Models\SubCategoryModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Eng Nour Othman
@@ -69,6 +71,13 @@ class ClientDeliveryController extends Controller
             if ($request->birth_date) {
                 $client->birth_date  = $request->birth_date;
             }
+            if ($request->file('image')) {
+                if ($client->image) {
+                    Storage::delete($client->image);
+                }
+                $file =  $request->file('image')->store('public/');
+                $client->image = basename($file);
+            }
             $res = $client->save();
             if ($res) {
                 return response()->json($client, 200);
@@ -85,6 +94,59 @@ class ClientDeliveryController extends Controller
         $client = ClientModel::find($id);
         if ($client) {
             return response()->json($client, 200);
+        }
+        return response()->json([], 500);
+    }
+
+
+    public function updateDeliveryProfile(Request $request)
+    {
+        $deliveryMan = DeliveryManModel::find($request->id);
+        if ($deliveryMan) {
+            if ($request->name) {
+                $deliveryMan->name  = $request->name;
+            }
+            if ($request->email) {
+                $deliveryMan->email  = $request->email;
+            }
+            if ($request->gender) {
+                $deliveryMan->gender  = $request->gender;
+            }
+            if ($request->birth_date) {
+                $deliveryMan->birth_date  = $request->birth_date;
+            }
+            if ($request->vehicle_id) {
+                $deliveryMan->vehicle_id  = $request->vehicle_id;
+            }
+            if ($request->lat) {
+                $deliveryMan->lat  = $request->lat;
+            }
+            if ($request->long) {
+                $deliveryMan->long  = $request->long;
+            }
+            if ($request->file('image')) {
+                if ($deliveryMan->image) {
+                    Storage::delete($deliveryMan->image);
+                }
+                $file =  $request->file('image')->store('public/');
+                $deliveryMan->image = basename($file);
+            }
+            $res = $deliveryMan->save();
+            if ($res) {
+                return response()->json($deliveryMan, 200);
+            }
+        } else {
+            return response()->json([], 400);
+        }
+
+        return response()->json([], 500);
+    }
+
+    public function getDeliveryManProfile($id)
+    {
+        $deliveryMan = DeliveryManModel::find($id);
+        if ($deliveryMan) {
+            return response()->json($deliveryMan, 200);
         }
         return response()->json([], 500);
     }
@@ -121,6 +183,39 @@ class ClientDeliveryController extends Controller
 
 
         if ($mainCategories && $newItems) {
+            return response()->json($message, 200);
+        }
+        return response()->json([], 500);
+    }
+
+
+    public function getNewItems()
+    {
+
+        $products = ProductModel::all()->sortBy("created_at");
+        if ($products) {
+            return response()->json($products, 200);
+        }
+        return response()->json([], 500);
+    }
+
+
+    public function getPopulatItems()
+    {
+
+        $products = ProductModel::all();
+        $message = [];
+        for ($i = 0; $i < count($products); $i++) {
+            array_push($message, [
+                'products' => $products[$i],
+                'rate'
+                => RateModel::where('product_id', $products[$i]->id)->get()->pluck('value')->avg(),
+            ]);
+        }
+        usort($message, function ($a, $b) {
+            return $b['rate'] <=> $a['rate'];
+        });
+        if ($products) {
             return response()->json($message, 200);
         }
         return response()->json([], 500);

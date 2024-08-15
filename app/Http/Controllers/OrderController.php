@@ -43,7 +43,6 @@ class OrderController extends Controller
         $order->delivery_type = $request->delivery_type;
         $order->client_id = $request->client_id;
         $order->delivery_man_id = $request->delivery_id;
-
         $order->address_id = $request->address_id;
         $order->save();
         for ($i = 0; $i < count($request->items); $i++) {
@@ -55,6 +54,7 @@ class OrderController extends Controller
             $order_product =   $order_product->save();
         }
         if ($order_product) {
+
             $order->sub_total = $subTotal;
             $order->save();
             return response()->json([], 200);
@@ -95,9 +95,16 @@ class OrderController extends Controller
     }
     public function getClientOrders($id)
     {
+        $message = [];
         $orders = OrderModel::where('client_id', $id)->get();
         if ($orders) {
-            return response()->json($orders, 200);
+            for($i =0;$i<count($orders);$i++){
+            array_push($message,[
+                'order' => $orders[$i],
+                'products' => $orders[$i]->product()
+            ]);
+            }
+            return response()->json($message, 200);
         }
         return response()->json([], 500);
     }

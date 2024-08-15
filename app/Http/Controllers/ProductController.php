@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductModel;
+use App\Models\RateModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,8 @@ class ProductController extends Controller
             array_push($message, [
                 'product' => $products[$i],
                 'brand' =>  $products[$i]->brand,
-                'subCategory' =>  $products[$i]->subCategory
+                'subCategory' =>  $products[$i]->subCategory,
+                'rate' => RateModel::where('product_id',$products[$i]->id)->get()->pluck('value')->avg(),
                 // 'subBranch' =>  $products[$i]->subSubBrancg,
             ]);
         }

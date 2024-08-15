@@ -134,3 +134,16 @@ Route::get('getClientProfile/{id}', [ClientDeliveryController::class, 'getClient
 
 //rate 
 Route::post('rateProduct', [RateController::class, 'rateProduct']);
+
+
+//delivery
+Route::get('getDeliveryManProfile/{id}', [ClientDeliveryController::class, 'getDeliveryManProfile']);
+Route::post('updateDeliveryProfile', [ClientDeliveryController::class, 'updateDeliveryProfile']);
+
+
+
+
+//items 
+Route::get('getNewItems', [ClientDeliveryController::class, 'getNewItems']);
+Route::get('getPopulatItems', [ClientDeliveryController::class, 'getPopulatItems']);
+
