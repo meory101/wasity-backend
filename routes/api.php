@@ -103,9 +103,13 @@ Route::post('deleteBrand', [BrandController::class, 'deleteBrand']);
 //product
 Route::get('getProductsBySubCategoryId/{id}', [ProductController::class, 'getProductsBySubCategoryId']);
 Route::post('addProduct', [ProductController::class, 'addProduct']);
+Route::get('getProducts', [ProductController::class, 'getProducts']);
 Route::get('getProductsBySubBranchId/{id}', [ProductController::class, 'getProductsBySubBranchId']);
 Route::post('updateProduct', [ProductController::class, 'updateProduct']);
 Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
+Route::post('getMostReleventProducts', [ProductController::class, 'getMostReleventProducts']);
+
+
 
 
 
@@ -151,7 +155,3 @@ Route::get('getPopulatItems', [ClientDeliveryController::class, 'getPopulatItems
 //manager
 Route::get('getSubBranchAccounts', [ManagerController::class, 'getSubBranchAccounts']);
 Route::get('getSubBranchByManagerId/{id}', [ManagerController::class, 'getSubBranchByManagerId']);
-
-
-
-    

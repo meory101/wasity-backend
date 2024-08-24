@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ProductModel;
 use App\Models\RateModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -123,6 +124,27 @@ class ProductController extends Controller
             return response()->json(['message' => 'product not found'], 400);
         }
 
+        return response()->json([], 500);
+    }
+
+
+    public function getMostReleventProducts(Request $request)
+    {
+        $message = [];
+        $response = Http::asForm()->post('http://10.2.0.2:5000/api/getMostReleventProducts', ['searchQuery' => $request->searchQuery ?? ""]);
+        $response =  json_decode(($response)['releventProducts'], true);
+        $response =  $response['docno'];
+        $ids = array_values($response);
+        for ($i = 0; $i < count($ids); $i++) {
+            $product =   ProductModel::where('id', $ids[$i])->get();
+            array_push(
+                $message,
+                $product
+            );
+        }
+        if ($message) {
+            return response()->json(['message' => $message], 200);
+        }
         return response()->json([], 500);
     }
 }
