@@ -147,3 +147,11 @@ Route::post('updateDeliveryProfile', [ClientDeliveryController::class, 'updateDe
 Route::get('getNewItems', [ClientDeliveryController::class, 'getNewItems']);
 Route::get('getPopulatItems', [ClientDeliveryController::class, 'getPopulatItems']);
 
+
+//manager
+Route::get('getSubBranchAccounts', [ManagerController::class, 'getSubBranchAccounts']);
+Route::get('getSubBranchByManagerId/{id}', [ManagerController::class, 'getSubBranchByManagerId']);
+
+
+
+    

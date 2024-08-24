@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ManagerModel;
+use App\Models\SubBranchModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -64,6 +65,36 @@ class ManagerController extends Controller
         return response()->json(
             ['message' => 'password is wrong'],
             400
+        );
+    }
+
+
+    public function getSubBranchAccounts()
+    {
+        $accounts = ManagerModel::where('role_id', 3)->get();
+        if ($accounts) {
+            return response()->json(
+                [],
+                200
+            );
+        }
+        return response()->json(
+            [],
+            500
+        );
+    }
+
+    public function getSubBranchByManagerId($id){
+        $subBranch = SubBranchModel::where('manager_id',$id)->first();
+        if($subBranch){
+            return response()->json(
+                $subBranch,
+                200
+            );
+        }
+        return response()->json(
+            [],
+            500
         );
     }
 }

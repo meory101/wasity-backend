@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    public function getProducts()
+    {
+        $products = ProductModel::all();
+
+        if ($products) {
+            return response()->json($products, 200);
+        }
+        return response()->json([], 500);
+    }
     public function getProductsBySubCategoryId($id)
     {
         $products = ProductModel::where('sub_category_id', $id)->get();
@@ -18,7 +27,7 @@ class ProductController extends Controller
                 'product' => $products[$i],
                 'brand' =>  $products[$i]->brand,
                 'subCategory' =>  $products[$i]->subCategory,
-                'rate' => RateModel::where('product_id',$products[$i]->id)->get()->pluck('value')->avg(),
+                'rate' => RateModel::where('product_id', $products[$i]->id)->get()->pluck('value')->avg(),
                 // 'subBranch' =>  $products[$i]->subSubBrancg,
             ]);
         }
@@ -55,7 +64,10 @@ class ProductController extends Controller
         $image = $request->file('image')->store('public');
         $product->image = basename($image);
         $product->name = $request->name;
+        $product->desc = $request->desc;
         $product->price = $request->price;
+        $product->size_type = $request->size_type;
+        $product->count = $request->count;
         $product->brand_id = $request->brand_id;
         $product->sub_category_id = $request->sub_category_id;
         $product->sub_branch_id = $request->sub_branch_id;

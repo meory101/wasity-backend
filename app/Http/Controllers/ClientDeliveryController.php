@@ -220,4 +220,28 @@ class ClientDeliveryController extends Controller
         }
         return response()->json([], 500);
     }
+
+    // getOrders deliveryOrder
+
+    public function getOrders(Request $request){
+        //order has may product but from the same sub branch
+        //product location in range 5km from delivery location
+        //size type matches delivery verhicle
+        //size guide 1 small 2 mid 3 big 4 larg
+        //large ->>>>>> truk
+        //big ->>>>>> van or truk
+        //mid ->>>>>> RC PC van
+        //small 
+        // if greater than 10 items consider it mid
+        // if the total price greater than 2M consider it mid
+        //if none of the above ->>>>>>> cycle
+        $deliverytMan = DeliveryManModel::find($request->id); 
+        if(true){
+           for($i=0;$i<count($request->items);$i++){
+            // if($items[$i]->size_type == 4){
+                
+            // }
+           }
+        }
+    }
 }

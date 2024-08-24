@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('birth_date')->nullable();
             $table->string('image')->nullable();
             $table->string('number');
+            $table->integer('availablity')->default(0);
             $table->double('lat')->nullable();
             $table->double('long')->nullable();
             $table->foreignId('vehicle_id')->nullable()->constrained('vehicle')->cascadeOnDelete()->cascadeOnUpdate();
