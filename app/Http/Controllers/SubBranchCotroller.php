@@ -18,7 +18,14 @@ class SubBranchCotroller extends Controller
         }
         return response()->json([], 500);
     }
-
+    public function getSubBranches()
+    {
+        $subBranchs = SubBranchModel::all();
+        if ($subBranchs) {
+            return response()->json($subBranchs, 200);
+        }
+        return response()->json([], 500);
+    }
 
 
     public function addSubBranch(Request $request)

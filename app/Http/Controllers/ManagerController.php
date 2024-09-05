@@ -74,7 +74,7 @@ class ManagerController extends Controller
         $accounts = ManagerModel::where('role_id', 3)->get();
         if ($accounts) {
             return response()->json(
-                [],
+                $accounts,
                 200
             );
         }
@@ -84,9 +84,10 @@ class ManagerController extends Controller
         );
     }
 
-    public function getSubBranchByManagerId($id){
-        $subBranch = SubBranchModel::where('manager_id',$id)->first();
-        if($subBranch){
+    public function getSubBranchByManagerId($id)
+    {
+        $subBranch = SubBranchModel::where('manager_id', $id)->first();
+        if ($subBranch) {
             return response()->json(
                 $subBranch,
                 200

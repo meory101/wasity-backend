@@ -89,6 +89,9 @@ Route::post('updateMainBranch', [MainBranchController::class, 'updateMainBranch'
 
 //sub branch
 Route::post('addSubBranch', [SubBranchCotroller::class, 'addSubBranch']);
+Route::get('getSubBranches', [SubBranchCotroller::class, 'getSubBranches']);
+
+
 Route::post('updateSubBranch', [SubBranchCotroller::class, 'updateSubBranch']);
 Route::get('getSubBranchesByMainBranchId/{id}', [SubBranchCotroller::class, 'getSubBranchesByMainBranchId']);
 
@@ -108,7 +111,7 @@ Route::get('getProductsBySubBranchId/{id}', [ProductController::class, 'getProdu
 Route::post('updateProduct', [ProductController::class, 'updateProduct']);
 Route::post('deleteProduct', [ProductController::class, 'deleteProduct']);
 Route::post('getMostReleventProducts', [ProductController::class, 'getMostReleventProducts']);
-
+Route::post('pricingProducts', [ProductController::class, 'pricingProducts']);
 
 
 

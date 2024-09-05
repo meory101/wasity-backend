@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BrandModel;
 use App\Models\ClientModel;
 use App\Models\DeliveryManModel;
 use App\Models\MainCategoryModel;
 use App\Models\OTPModel;
 use App\Models\ProductModel;
 use App\Models\RateModel;
+use App\Models\SubBranchModel;
 use App\Models\SubCategoryModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -193,8 +195,19 @@ class ClientDeliveryController extends Controller
     {
 
         $products = ProductModel::all()->sortBy("created_at");
+
+        $message = [];
+        for ($i = 0; $i < count($products); $i++) {
+            array_push($message, [
+                'product' => $products[$i],
+                'brand' =>  BrandModel::find($products[$i]->brand_id),
+                'rate' => RateModel::where('product_id', $products[$i]->id)->get()->pluck('value')->avg(),
+                'subCategory' =>  $products[$i]->subCategory,
+                'subBranch' =>  SubBranchModel::find($products[$i]->sub_branch_id),
+            ]);
+        }
         if ($products) {
-            return response()->json($products, 200);
+            return response()->json($message, 200);
         }
         return response()->json([], 500);
     }
@@ -208,6 +221,8 @@ class ClientDeliveryController extends Controller
         for ($i = 0; $i < count($products); $i++) {
             array_push($message, [
                 'products' => $products[$i],
+                'brand' => $products[$i]->brand,
+                'branch' => $products[$i]->subBranch,
                 'rate'
                 => RateModel::where('product_id', $products[$i]->id)->get()->pluck('value')->avg(),
             ]);
@@ -223,7 +238,8 @@ class ClientDeliveryController extends Controller
 
     // getOrders deliveryOrder
 
-    public function getOrders(Request $request){
+    public function getOrders(Request $request)
+    {
         //order has may product but from the same sub branch
         //product location in range 5km from delivery location
         //size type matches delivery verhicle
@@ -235,13 +251,13 @@ class ClientDeliveryController extends Controller
         // if greater than 10 items consider it mid
         // if the total price greater than 2M consider it mid
         //if none of the above ->>>>>>> cycle
-        $deliverytMan = DeliveryManModel::find($request->id); 
-        if(true){
-           for($i=0;$i<count($request->items);$i++){
-            // if($items[$i]->size_type == 4){
-                
-            // }
-           }
+        $deliverytMan = DeliveryManModel::find($request->id);
+        if (true) {
+            for ($i = 0; $i < count($request->items); $i++) {
+                // if($items[$i]->size_type == 4){
+
+                // }
+            }
         }
     }
 }
