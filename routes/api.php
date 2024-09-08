@@ -70,6 +70,7 @@ Route::post('addSubCategory', [SubCategoryController::class, 'addSubCategory']);
 Route::get('getSubCategoriesByMainCategoryId/{id}', [SubCategoryController::class, 'getSubCategoriesByMainCategoryId']);
 Route::post('updateSubCategory', [SubCategoryController::class, 'updateSubCategory']);
 Route::post('deleteSubCategory', [SubCategoryController::class, 'deleteSubCategory']);
+Route::get('getSubCategories', [SubCategoryController::class, 'getSubCategories']);
 
 
 
@@ -130,6 +131,7 @@ Route::get('getDeliveredOrders/{id}', [OrderController::class, 'getDeliveredOrde
 Route::post('cancelOrder', [OrderController::class, 'cancelOrder']);
 Route::get('getAcceptedOrders', [OrderController::class, 'getAcceptedOrders']);
 Route::post('assignOrderToDelivery', [OrderController::class, 'assignOrderToDelivery']);
+Route::get('getSubBranchOrders/{id}', [OrderController::class, 'getSubBranchOrders']);
 
 
 

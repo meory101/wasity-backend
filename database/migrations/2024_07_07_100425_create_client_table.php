@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('gender')->nullable();
             $table->string('birth_date')->nullable();
+            $table->integer('points')->default(1000);
             $table->string('number');
             $table->string('image')->nullable();
 

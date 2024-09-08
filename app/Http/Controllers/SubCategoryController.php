@@ -80,4 +80,14 @@ class SubCategoryController extends Controller
 
         return response()->json([], 500);
     }
+
+    public function getSubCategories()
+    {
+        $subCategory =  SubCategoryModel::all();
+        if ($subCategory) {
+            return response()->json($subCategory, 200);
+        }
+
+        return response()->json([], 500);
+    }
 }

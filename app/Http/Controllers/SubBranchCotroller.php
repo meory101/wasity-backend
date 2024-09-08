@@ -96,4 +96,7 @@ class SubBranchCotroller extends Controller
 
         return response()->json([], 500);
     }
+
+ 
+    
 }
