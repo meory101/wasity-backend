@@ -72,9 +72,7 @@ class OrderController extends Controller
     public function  updateOrderStatus(Request $request)
     {
         $order = OrderModel::find($request->id);
-        if (!$order) {
-            return response()->json(['message' => 'order not found'], 400);
-        }
+     
         $order->status_code = $request->status_code;
         $order = $order->save();
         if ($order) {
