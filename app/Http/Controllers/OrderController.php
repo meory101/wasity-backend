@@ -50,13 +50,15 @@ class OrderController extends Controller
         $order->address_id = $request->address_id;
         $order->save();
         for ($i = 0; $i < count($request->items); $i++) {
+            $item = json_decode($request->items[$i]);
             $order_product = new OrderProductModel;
-            $product =  ProductModel::where('id', $request->items[$i])->first();
+            $product =  ProductModel::where('id', $item->id)->first();
             $subTotal += $product->price;
-            $product->count--;
+            $product->count -= $item->id;
             $product->save();
             $order_product->order_id = $order->id;
-            $order_product->product_id = $request->items[$i];
+            $order_product->product_id = $item->id;
+            $order_product->count = $item->count;
             $order_product =   $order_product->save();
         }
         if ($order_product) {
@@ -69,15 +71,25 @@ class OrderController extends Controller
         return response()->json([], 500);
     }
 
-    public function  updateOrderStatus(Request $request)
+    public function updateOrderStatus(Request $request)
     {
-        $order = OrderModel::find($request->id);
-     
+        $validated = $request->validate([
+            'order_id' => 'required|integer',
+            'status_code' => 'required|integer',
+        ]);
+
+        $order = OrderModel::find($request->order_id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 400);
+        }
+
         $order->status_code = $request->status_code;
-        $order = $order->save();
-        if ($order) {
+
+        if ($order->save()) {
             return response()->json([], 200);
         }
+
         return response()->json([], 500);
     }
     public function cancelOrder(Request $request)
@@ -149,9 +161,7 @@ class OrderController extends Controller
             foreach ($order_products as $order_product) {
                 $order = OrderModel::find($order_product->order_id);
 
-                // Check if the order already exists in the orders array
                 if (!isset($orders[$order->id])) {
-                    // If not, initialize the order entry
                     $orders[$order->id] = [
                         'order' => $order,
                         'products' => [],
@@ -166,6 +176,7 @@ class OrderController extends Controller
             $message[] = [
                 'order' => $order['order'],
                 'products' => $order['products'],
+                'order_product' => OrderProductModel::where('order_id', $order['order']->id)->get()
             ];
         }
 

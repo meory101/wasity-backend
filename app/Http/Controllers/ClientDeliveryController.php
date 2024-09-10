@@ -216,21 +216,24 @@ class ClientDeliveryController extends Controller
     public function getPopulatItems()
     {
 
-        $products = ProductModel::all();
+        $product = ProductModel::all();
         $message = [];
-        for ($i = 0; $i < count($products); $i++) {
+        for ($i = 0; $i < count($product); $i++) {
+            // return $products[$i];
             array_push($message, [
-                'products' => $products[$i],
-                'brand' => $products[$i]->brand,
-                'branch' => $products[$i]->subBranch,
+                'product' => $product[$i],
+                'brand' => $product[$i]->brand,
+                'branch' => $product[$i]->subBranch,
+                'subCategory' =>  $product[$i]->subCategory,
+                'subBranch' =>  SubBranchModel::find($product[$i]->sub_branch_id),
                 'rate'
-                => RateModel::where('product_id', $products[$i]->id)->get()->pluck('value')->avg(),
+                => RateModel::where('product_id', $product[$i]->id)->get()->pluck('value')->avg(),
             ]);
         }
         usort($message, function ($a, $b) {
             return $b['rate'] <=> $a['rate'];
         });
-        if ($products) {
+        if ($product) {
             return response()->json($message, 200);
         }
         return response()->json([], 500);
