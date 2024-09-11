@@ -26,4 +26,21 @@ class WasityAccountController extends Controller
         }
         return response()->json([], 500);
     }
+
+    public function getAccount(Request $request)
+    {
+        //type 0 client 1 sub branch owner 
+        //
+        //
+        if ($request->type == 0) {
+            $account =  WasityAccountModel::where('client_id', $request->client_id)->first();
+        
+            return response()->json($account, 200);
+        }
+        if ($request->type == 1) {
+            $account =  WasityAccountModel::where('manager_id', $request->manager_id)->first();
+            return response()->json($account, 200);
+        }
+        return response()->json([], 500);
+    }
 }
