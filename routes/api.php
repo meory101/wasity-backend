@@ -13,6 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RateController;
 use App\Http\Controllers\SubBranchCotroller;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\WasityAccountController;
 use App\Models\ProductModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -160,3 +161,7 @@ Route::get('getPopulatItems', [ClientDeliveryController::class, 'getPopulatItems
 //manager
 Route::get('getSubBranchAccounts', [ManagerController::class, 'getSubBranchAccounts']);
 Route::get('getSubBranchByManagerId/{id}', [ManagerController::class, 'getSubBranchByManagerId']);
+
+
+
+Route::post('changeBalance', [WasityAccountController::class, 'changeBalance']);

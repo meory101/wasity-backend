@@ -118,9 +118,14 @@ class OrderController extends Controller
         $orders = OrderModel::where('client_id', $id)->get();
         if ($orders) {
             for ($i = 0; $i < count($orders); $i++) {
+                $products =[];
+                $order_product  = OrderProductModel::where('order_id',$orders[$i]->id)->get();
+                for($j=0;$j<count($order_product);$j++){
+                  array_push($products, ProductModel::find($order_product[$j]->product_id))  ;
+                }
                 array_push($message, [
                     'order' => $orders[$i],
-                    'products' => $orders[$i]->product()
+                    'products' => $products
                 ]);
             }
             return response()->json($message, 200);

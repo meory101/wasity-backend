@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ManagerModel;
 use App\Models\SubBranchModel;
+use App\Models\WasityAccountModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,8 +26,14 @@ class ManagerController extends Controller
         $manager->email = $request->email;
         $manager->password = Hash::make($request->password);
         $manager->role_id = $request->role_id;
-        $manager = $manager->save();
-        if ($manager) {
+        $res = $manager->save();
+        if ($request->role_id == 3) {
+            $account = new WasityAccountModel;
+            $account->manager_id = $manager->id;
+            $account->balance = 0;
+            $account->save();
+        }
+        if ($res) {
             return response()->json([], 200);
         }
 

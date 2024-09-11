@@ -11,6 +11,7 @@ use App\Models\ProductModel;
 use App\Models\RateModel;
 use App\Models\SubBranchModel;
 use App\Models\SubCategoryModel;
+use App\Models\WasityAccountModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,6 +33,7 @@ class ClientDeliveryController extends Controller
 
         if ($request->type == 0) {
             $client =  ClientModel::where('number', $request->number)->first();
+           
             $otp = OTPModel::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         }
         if ($request->type == 1) {

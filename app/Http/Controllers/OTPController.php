@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClientModel;
 use App\Models\DeliveryManModel;
 use App\Models\OTPModel;
+use App\Models\WasityAccountModel;
 use Illuminate\Http\Request;
 
 /**
@@ -26,13 +27,19 @@ class OTPController extends Controller
                 $client =  new ClientModel;
                 $client->number = $request->number;
                 $client->save();
+
+                $account = new WasityAccountModel;
+                $account->client_id = $client->id;
+                $account->balance = 0;
+                print($account);
+                $account->save();
             }
             $otp->client_id
                 = $client->id;
         }
         if ($request->type == 1) {
             $delivery_man =  new DeliveryManModel;
-          $delivery_man=  $delivery_man->where('number', $request->number)->first();
+            $delivery_man =  $delivery_man->where('number', $request->number)->first();
             if (!$delivery_man) {
                 $delivery_man =  new DeliveryManModel;
                 $delivery_man->number = $request->number;
@@ -40,8 +47,6 @@ class OTPController extends Controller
             }
             $otp->delivery_man_id
                 = $delivery_man->id;
-
-
         }
         if ($otp->client_id || $otp->delivery_man_id) {
             $otp->otp_code = $otp_code;
@@ -56,6 +61,6 @@ class OTPController extends Controller
     }
 
 
-    
+
     //test
 }
