@@ -165,3 +165,5 @@ Route::get('getSubBranchByManagerId/{id}', [ManagerController::class, 'getSubBra
 
 
 Route::post('changeBalance', [WasityAccountController::class, 'changeBalance']);
+Route::get('getUsers', [WasityAccountController::class, 'getUsers']);
+Route::post('getAccount', [WasityAccountController::class, 'getAccount']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientModel;
 use App\Models\WasityAccountModel;
 use Illuminate\Http\Request;
 
@@ -34,12 +35,22 @@ class WasityAccountController extends Controller
         //
         if ($request->type == 0) {
             $account =  WasityAccountModel::where('client_id', $request->client_id)->first();
-        
+
             return response()->json($account, 200);
         }
         if ($request->type == 1) {
             $account =  WasityAccountModel::where('manager_id', $request->manager_id)->first();
             return response()->json($account, 200);
+        }
+        return response()->json([], 500);
+    }
+
+    public function getUsers()
+    {
+        $users = ClientModel::all();
+        if ($users) {
+
+            return response()->json($users, 200);
         }
         return response()->json([], 500);
     }

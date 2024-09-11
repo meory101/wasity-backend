@@ -6,6 +6,7 @@ use App\Models\ClientModel;
 use App\Models\OrderModel;
 use App\Models\OrderProductModel;
 use App\Models\ProductModel;
+use App\Models\WasityAccountModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\HigherOrderCollectionProxy;
 
@@ -48,12 +49,20 @@ class OrderController extends Controller
         $order->client_id = $request->client_id;
         $order->delivery_man_id = $request->delivery_id;
         $order->address_id = $request->address_id;
-        $order->save();
         for ($i = 0; $i < count($request->items); $i++) {
             $item = json_decode($request->items[$i]);
             $order_product = new OrderProductModel;
             $product =  ProductModel::where('id', $item->id)->first();
-            $subTotal += $product->price;
+            $subTotal += $product->price  * $item->count;
+            $subTotal += $product->price  * $item->count;
+            $acc = WasityAccountModel::where('client_id', $request->client_id)->first();
+            if ($acc->balance >= $subTotal) {
+                $acc->balance -= $subTotal;
+                $acc->save();
+                $order->save();
+            } else {
+                return response()->json(['no money'], 500);
+            }
             $product->count -= $item->id;
             $product->save();
             $order_product->order_id = $order->id;
@@ -118,10 +127,10 @@ class OrderController extends Controller
         $orders = OrderModel::where('client_id', $id)->get();
         if ($orders) {
             for ($i = 0; $i < count($orders); $i++) {
-                $products =[];
-                $order_product  = OrderProductModel::where('order_id',$orders[$i]->id)->get();
-                for($j=0;$j<count($order_product);$j++){
-                  array_push($products, ProductModel::find($order_product[$j]->product_id))  ;
+                $products = [];
+                $order_product  = OrderProductModel::where('order_id', $orders[$i]->id)->get();
+                for ($j = 0; $j < count($order_product); $j++) {
+                    array_push($products, ProductModel::find($order_product[$j]->product_id));
                 }
                 array_push($message, [
                     'order' => $orders[$i],
