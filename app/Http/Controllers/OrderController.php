@@ -55,14 +55,17 @@ class OrderController extends Controller
             $product =  ProductModel::where('id', $item->id)->first();
             $subTotal += $product->price  * $item->count;
             $subTotal += $product->price  * $item->count;
-            $acc = WasityAccountModel::where('client_id', $request->client_id)->first();
-            if ($acc->balance >= $subTotal) {
-                $acc->balance -= $subTotal;
-                $acc->save();
-                $order->save();
-            } else {
-                return response()->json(['no money'], 500);
-            }
+           $acc= WasityAccountModel::where('client_id', $request->client_id)->first();
+         if($request->pay_type == 1){
+                if ($acc->balance >= $subTotal) {
+                    $acc->balance -= $subTotal;
+                    $acc->save();
+                    $order->save();
+                } else {
+                    return response()->json(['no money'], 500);
+                }
+         }
+            $order->save();
             $product->count -= $item->id;
             $product->save();
             $order_product->order_id = $order->id;
