@@ -33,6 +33,7 @@ class ClientDeliveryController extends Controller
 
         if ($request->type == 0) {
             $client =  ClientModel::where('number', $request->number)->first();
+            
            
             $otp = OTPModel::where('client_id', $client->id)->orderBy('created_at', 'desc')->first();
         }
@@ -265,4 +266,8 @@ class ClientDeliveryController extends Controller
             }
         }
     }
+
+
 }
+
+
