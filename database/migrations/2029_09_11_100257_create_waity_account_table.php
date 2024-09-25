@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('waity_account', function (Blueprint $table) {
             $table->id();
+            $table->string('number');
             $table->double('balance');
             $table->foreignId('client_id')->nullable()->constrained('client')->onDelete('cascade');
             $table->foreignId('delivery_man_id')->nullable()->constrained('delivery_man')->onDelete('cascade');

@@ -27,11 +27,10 @@ class OTPController extends Controller
                 $client =  new ClientModel;
                 $client->number = $request->number;
                 $client->save();
-
                 $account = new WasityAccountModel;
+                $account->number = random_int(10000000, 99999999);
                 $account->client_id = $client->id;
                 $account->balance = 0;
-                print($account);
                 $account->save();
             }
             $otp->client_id

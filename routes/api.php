@@ -133,6 +133,7 @@ Route::post('cancelOrder', [OrderController::class, 'cancelOrder']);
 Route::get('getAcceptedOrders', [OrderController::class, 'getAcceptedOrders']);
 Route::post('assignOrderToDelivery', [OrderController::class, 'assignOrderToDelivery']);
 Route::get('getSubBranchOrders/{id}', [OrderController::class, 'getSubBranchOrders']);
+Route::post('getDeliveryOrders', [OrderController::class, 'getDeliveryOrders']);
 
 
 
@@ -149,8 +150,6 @@ Route::post('rateProduct', [RateController::class, 'rateProduct']);
 //delivery
 Route::get('getDeliveryManProfile/{id}', [ClientDeliveryController::class, 'getDeliveryManProfile']);
 Route::post('updateDeliveryProfile', [ClientDeliveryController::class, 'updateDeliveryProfile']);
-
-
 
 
 //items 

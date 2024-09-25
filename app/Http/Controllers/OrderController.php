@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientModel;
+use App\Models\ManagerModel;
 use App\Models\OrderModel;
 use App\Models\OrderProductModel;
 use App\Models\ProductModel;
@@ -54,6 +55,10 @@ class OrderController extends Controller
             $item = json_decode($request->items[$i]);
             $order_product = new OrderProductModel;
             $product =  ProductModel::where('id', $item->id)->first();
+            // return $product;
+            if ($product->count < $item->count) {
+                return response()->json(['only' . $product->count . 'left'], 400);
+            }
             $subTotal += $product->price  * $item->count;
 
 
@@ -212,5 +217,59 @@ class OrderController extends Controller
         }
 
         return $message;
+    }
+
+    public function getDeliveryOrders(Request $request)
+    {
+        // size type  vehicle type
+        $suitableCar = [
+            '1' => ['1', '2', '3'],
+            '2' => ['2', '3'],
+            '3' => ['2', '3', '4'],
+            '4' => ['4', '5']
+        ];
+        //size guide 1 small 2 mid 3 big 4 larg
+        //  1 -> cycle  if value is more than 500k go with RC PC
+        //  2 -> RC 
+        //  3 -> PC
+        //  4 -> van
+        //  5 -> truck
+        $product = new ProductModel;
+        $orders = OrderModel::where('status_code', '0')->get();
+        $message = [];
+        if ($orders) {
+            for ($i = 0; $i < count($orders); $i++) {
+                $canDeliver = true;
+                $products = [];
+                $order_products = OrderProductModel::where('order_id', $orders[$i]->id)->get();
+                for ($j = 0; $j < count($order_products); $j++) {
+
+                    $product = ProductModel::find($order_products[$j]->product_id);
+                    $subBranch = SubBranchModel::find($product->sub_branch_id);
+                    array_push($products, ['product' =>
+                    $product, 'branch' => $subBranch]);
+                    if (
+                        !isset($suitableCar[$product->size_type]) ||
+                        !in_array($request->vehicle_id, $suitableCar[$product->size_type])
+                    ) {
+                        $canDeliver = false;
+                        break;
+                    }
+                }
+
+                if ($canDeliver == true) {
+                    array_push($message, ['orderDetails' => [
+                        'order' => $orders[$i],
+                        'products' => $products,
+
+                    ]]);
+                }
+            }
+            return response()->json((
+                ["result" => $message]
+            ), 200);
+        }
+
+        return response()->json([], 500);
     }
 }
