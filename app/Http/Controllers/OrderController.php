@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AddressModel;
 use App\Models\ClientModel;
 use App\Models\OrderModel;
 use App\Models\OrderProductModel;
@@ -43,7 +44,7 @@ class OrderController extends Controller
         if ($client->points <= 10) {
             return response()->json(['error' => 'This user cannot make an order'], 200);
         }
-    
+
         $order = new OrderModel;
         $subTotal = 0;
         $order->order_number = str()->random(8);
@@ -51,23 +52,28 @@ class OrderController extends Controller
         $order->delivery_type = $request->delivery_type;
         $order->client_id = $request->client_id;
         $order->address_id = $request->address_id;
-    
-        $order->save();
-    
-        $items = json_decode($request->items, true);
+        // $order->save();
+
+
+        // $items = json_decode($request->items, true);
+        $items = $request->items;
         if (!is_array($items)) {
             return response()->json(['error' => 'Invalid items format'], 400);
         }
-    
+
         foreach ($items as $itemData) {
             $item = (object)$itemData;
             $product = ProductModel::find($item->id);
+            // return $product;
+            if ($product->count < $item->count) {
+                return response()->json(['only' . $product->count . 'left'], 400);
+            }
             if (!$product) {
                 return response()->json(['error' => 'Product not found'], 404);
             }
-    
+
             $subTotal += $product->price * $item->count;
-    
+
             $acc = WasityAccountModel::where('client_id', $request->client_id)->first();
             if ($request->pay_type == 1) {
                 $subBranch  = SubBranchModel::find($product->sub_branch_id);
@@ -76,7 +82,7 @@ class OrderController extends Controller
                     $account->balance += $product->price * $item->count;
                     $account->save();
                 }
-    
+
                 if ($acc->balance >= $subTotal) {
                     $acc->balance -= $subTotal;
                     $acc->save();
@@ -84,45 +90,44 @@ class OrderController extends Controller
                     return response()->json(['error' => 'Insufficient balance'], 500);
                 }
             }
-    
+            $order->save();
             $order_product = new OrderProductModel;
-            $order_product->order_id = $order->id;     
+            $order_product->order_id = $order->id;
             $order_product->product_id = $item->id;
             $order_product->count = $item->count;
             $order_product->save();
-    
             $product->count -= $item->count;
             $product->save();
         }
-    
+
         $client->points += $subTotal / 100;
         $client->save();
-    
+
         $order->sub_total = $subTotal;
-        $order->save();
-    
+
+
         return response()->json(['message' => 'Order placed successfully'], 200);
     }
 
-public function updateOrderStatus(Request $request)
+    public function updateOrderStatus(Request $request)
     {
         $validated = $request->validate([
             'order_id' => 'required|integer',
             'status_code' => 'required|integer',
         ]);
-    
+
         $order = OrderModel::find($request->order_id);
-        
+
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 400);
         }
-    
+
         $order->status_code = $request->status_code;
-    
+
         if ($order->save()) {
             return response()->json([], 200);
         }
-    
+
         return response()->json([], 500);
     }
     public function cancelOrder(Request $request)
@@ -133,7 +138,7 @@ public function updateOrderStatus(Request $request)
             return response()->json(['message' => 'can not find order'], 200);
         }
         if ($order->status_code == 0 || $order->status_code == 1) {
-            $res =  $order->status_code = 4;
+            $res =  $order->status_code = 5;
             if ($res) {
                 $client = ClientModel::find($request->user_id);
                 $client->points -= ($order->sub_total / 10);
@@ -260,6 +265,9 @@ public function updateOrderStatus(Request $request)
                     array_push($message, ['orderDetails' => [
                         'order' => $orders[$i],
                         'products' => $products,
+                        'client' => ClientModel::find($orders[$i]->client_id),
+                        'address' => AddressModel::find($orders[$i]->address_id)
+
                     ]]);
                 }
             }
