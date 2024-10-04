@@ -236,6 +236,8 @@ class OrderController extends Controller
             '3' => ['2', '3', '4'],
             '4' => ['4', '5']
         ];
+        //
+        //
         //size guide 1 small 2 mid 3 big 4 larg
         //  1 -> cycle  if value is more than 500k go with RC PC
         //  2 -> RC 
