@@ -55,8 +55,8 @@ class OrderController extends Controller
         // $order->save();
 
 
-        // $items = json_decode($request->items, true);
-        $items = $request->items;
+        $items = json_decode($request->items, true);
+        // $items = $request->items;
         if (!is_array($items)) {
             return response()->json(['error' => 'Invalid items format'], 400);
         }
@@ -138,8 +138,10 @@ class OrderController extends Controller
             return response()->json(['message' => 'can not find order'], 200);
         }
         if ($order->status_code == 0 || $order->status_code == 1) {
-            $res =  $order->status_code = 5;
+            $order->status_code = 5;
+            $res = $order->save();
             if ($res) {
+                // $order_products = 
                 $client = ClientModel::find($request->user_id);
                 $client->points -= ($order->sub_total / 10);
                 $client->save();
